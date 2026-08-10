@@ -1,13 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"time"
+
+	"github.com/SecureParadise/olx_monolith/internal/config"
 )
 
 func main() {
+	cfg := config.MustLoad()
+	fmt.Println("starting olx server .... ")
 	// mux = router
 	// router itself is atype of handler in golang
 	mux := http.NewServeMux()
@@ -19,8 +24,9 @@ func main() {
 		w.Write([]byte(`{"status":"ok"}`))
 	})
 
-	server := http.Server{
-		Addr:         ":8090",
+	server := &http.Server{
+		// Addr: ":8090",
+		Addr:         ":" + cfg.Port,
 		Handler:      mux,
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 30,
@@ -28,9 +34,8 @@ func main() {
 	}
 
 	// err := http.ListenAndServe(":8090", mux)
-	err := server.ListenAndServe()
-
-	if err != nil {
+	log.Printf("server is listening on %s", server.Addr)
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("server failed: %v", err)
 	}
 }
