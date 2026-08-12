@@ -25,7 +25,7 @@ func main() {
 	})
 
 	server := &http.Server{
-		// Addr: ":8090",
+		// Addr: ":" + os.Getenv("PORT"),
 		Addr:         ":" + cfg.Port,
 		Handler:      mux,
 		ReadTimeout:  time.Second * 10,
