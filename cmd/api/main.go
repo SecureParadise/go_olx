@@ -21,9 +21,7 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		// strictly follow chronollogy and order
-		w.Write([]byte(`{
-		"status" : "sab gazab"
-		}`))
+		w.Write([]byte(`{"status":"okey rey"}`))
 	})
 
 	server := &http.Server{
