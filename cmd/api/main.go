@@ -8,21 +8,17 @@ import (
 	"time"
 
 	"github.com/SecureParadise/olx_monolith/internal/config"
+	"github.com/SecureParadise/olx_monolith/internal/handlers"
 )
 
+// the major funcanality of main.go is to wireup every funcanality
 func main() {
 	cfg := config.MustLoad()
 	fmt.Println("starting olx server .... ")
 	// mux = router
 	// router itself is atype of handler in golang
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
-		// http.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		// strictly follow chronollogy and order
-		w.Write([]byte(`{"status":"okey rey"}`))
-	})
+	mux.HandleFunc("GET /health", handlers.Health)
 
 	server := &http.Server{
 		// Addr: ":" + os.Getenv("PORT"),
