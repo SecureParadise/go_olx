@@ -7,13 +7,22 @@ import (
 	_ "net/http/pprof"
 	"time"
 
+	_ "github.com/jackc/pgx/v5/stdlib"
+
 	"github.com/SecureParadise/olx_monolith/internal/config"
+	"github.com/SecureParadise/olx_monolith/internal/db"
 	"github.com/SecureParadise/olx_monolith/internal/handlers"
 )
 
 // the major funcanality of main.go is to wireup every funcanality
 func main() {
 	cfg := config.MustLoad()
+	_, err := db.Connect(cfg.DataBaseUrl)
+	if err != nil {
+		log.Fatalf("main.db.connect: %v", err)
+	}
+
+	fmt.Println("database connected .... ")
 	fmt.Println("starting olx server .... ")
 	// mux = router
 	// router itself is atype of handler in golang
